@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["title"] = "VerifyOTP";
+}
+
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth px-0" style="background-image:url('https://cdn.pixabay.com/photo/2021/11/25/10/41/school-6823264_1280.png')">
+            <div class="row w-100 mx-0">
+                <div class="col-lg-4 mx-auto">
+                    <div class="auth-form-light text-left py-5 px-4 px-sm-5" style="background: #8fe8ec; border-radius:50px">
+
+                        <h3 style="text-align:center;text-shadow:1px 1px 2px black;color:antiquewhite">Student Attedence Management</h3>
+                        <br />
+
+                        <h4 class="font-weight-light" style="text-align:center;color:aliceblue">Enter OTP</h4>
+
+                        <form asp-action="VerifyOtp" method="post">
+                            <div class="form-group">
+                                <label>OTP</label>
+                                <input type="text" name="otp" class="form-control" required />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Verify</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>

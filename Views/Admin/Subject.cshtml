@@ -1,0 +1,79 @@
+﻿@using SchoolAttendanceManager.Views.view_Model
+@model  SubjectVM
+
+@{
+    ViewData["Title"] = "subject";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+
+
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body" style="background-color:#959697">
+                    <h1 class="card-title" style="color:black;font-size:medium">Add Subjects </h1>
+                    <form class="form-sample" method="post">
+                        <div class="row">
+                            <input type="hidden" asp-for="subReg.Id">
+                            
+                            <div class="col-md-5">
+                                <div class="form-group row">
+                                    <label>Subject Name*</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="subReg.SubjectName" type="text" class="form-control" placeholder="Enter Subject Name........." />
+                                        <span asp-validation-for="subReg.SubjectName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+
+                                        @if (Model.subReg.Id == 0)
+                                        {
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn-warning">Update</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Subject Details</h2>
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Subject Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div><!-- end col -->
+@section Scripts {
+    <script src="~/js/SubjectJs.js" asp-append-version="true"></script>
+}
+
+
+    
+ 

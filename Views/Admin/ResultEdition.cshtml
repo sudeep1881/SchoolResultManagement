@@ -1,0 +1,105 @@
+﻿@using SchoolAttendanceManager.Views.view_Model
+@model StudentDetailsVM
+@{
+    ViewData["Title"] = "Result_Edition";
+}
+
+
+<div class="content-wrapper">
+    <div class="row">
+
+
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body" style="background-color:#959697">
+                    <h1 class="card-title" style="color:black;font-size:medium">Student Result Edit Button</h1>
+                    <form class="form-sample" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="hidden" asp-for="studentDetailsReg.Id">
+                                <div class="form-group row">
+                                    <label class="form-label">Student Name*</label>
+                                    <select asp-for="studentDetailsReg.StudentId" asp-items="@Model.NameList" class="form-select select2" required>
+                                        <option disabled selected>----Select Name----</option>
+                                    </select>
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>Class</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="studentDetailsReg.Class" type="text" class="form-control" placeholder=".....Enter Class........">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>Section</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="studentDetailsReg.Section" type="text" class="form-control" placeholder="....Enter Section.....">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="form-label">Subjecte*</label>
+                                    <select id="roleDropDown" asp-for="studentDetailsReg.SubjectsId" asp-items="@Model.SubjectList" class="form-select select2" required>
+                                        <option disabled selected>----Select Subject----</option>
+                                    </select>
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>Marks</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="studentDetailsReg.Marks" type="text" class="form-control" placeholder="........Enter Marks......">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>Percentage</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="studentDetailsReg.Percentage" type="text" class="form-control" placeholder="...Enter Percentage.....">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="form-label">Result*</label>
+                                    <select asp-for="studentDetailsReg.ResultId" asp-items="@Model.ResultList" class="form-select" required>
+                                        <option disabled selected>----Select Result----</option>
+                                    </select>
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+
+                                        @if (Model.studentDetailsReg.Id != 0)
+                                        {
+                                            <button type="submit" class="btn btn-warning">Update</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>

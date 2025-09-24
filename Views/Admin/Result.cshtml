@@ -1,0 +1,85 @@
+﻿@using SchoolAttendanceManager.Views.view_Model
+@model ResultVM
+
+
+@{
+    ViewData["Title"] = "Result";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+
+
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body" style="background-color:#959697">
+                    <h1 class="card-title" style="color:black;font-size:medium">Add Result </h1>
+                    <form class="form-sample" method="post">
+                        <div class="row">
+                            <input type="hidden" asp-for="resReg.Id">
+
+                            <div class="col-md-5">
+                                <div class="form-group row">
+                                    <label>Result Name*</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="resReg.ExamResult" type="text" class="form-control" placeholder="Enter Result Name........." />
+                                        <span asp-validation-for="resReg.ExamResult" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+
+                                        @if (Model.resReg.Id == 0)
+                                        {
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn-warning">Update</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Result Names</h2>
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Result Name</th>
+                          
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div> <!-- end col -->
+
+    </div>
+
+
+
+
+       @section Scripts{
+           <script src="~/js/Resultjs.js" asp-append-version="true"></script>
+       }

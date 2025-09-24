@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Teacher";
+}
+
+
+<div class="content-wrapper">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Teacher List</h2>
+                <div class="d-flex justify-content-end">
+                    <button id="Teacherdownloadexcel" class="btn btn-success mb-3">
+                        Download Success
+                    </button>
+                </div>
+
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Role</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>password</th>
+                            <th>ImageUpload</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div><!-- end col -->
+@section Scripts {
+    <script src="~/js/TeacherLIstJS.js" asp-append-version="true"></script>
+    <script src="~/js/excel helper/excel-helper.js"></script>
+    <script src="~/js/excel download/admin_userdetails.js"></script>
+
+}
+
+

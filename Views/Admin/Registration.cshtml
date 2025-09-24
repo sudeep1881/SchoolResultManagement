@@ -1,0 +1,214 @@
+﻿@using SchoolAttendanceManager.Views.view_Model
+
+@model UserRegisterVM
+
+@{
+    ViewData["Title"] = "Registration";
+}
+
+
+<!-- partial -->
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body" style="background-color:#959697">
+                    <h1 class="card-title" style="color:black;font-size:medium">Enter Registration Details</h1>
+                    <form class="form-sample" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="hidden" asp-for="UserReg.Id">
+                                <div class="form-group row">
+                                    <label asp-for="UserReg.RoleId" class="form-label">Role*</label>
+                                    <select asp-for="UserReg.RoleId" asp-items="@Model.RoleList" class="form-select select2" required>
+                                        <option disabled selected>----Select Role----</option>
+                                    </select>
+                                    <span asp-validation-for="UserReg.RoleId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>Name*</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="UserReg.Name" type="text" class="form-control" placeholder="Enter Name........." />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>Email*</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="UserReg.Email" type="email" class="form-control" placeholder="Enter Email">
+                                        <span asp-validation-for="UserReg.Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>Password</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="UserReg.Password" type="text" class="form-control" placeholder="Enter Password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label asp-for="UserReg.ImageUpload" class="form-label">Profile Image</label>
+                                    <input type="file" name="fileProfileImage" id="fileProfileImage" class="form-control form-control-sm" accept="image/*" />
+                                    <span asp-validation-for="UserReg.ImageUpload" id="fileError" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>Registration Date</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="UserReg.RegistrationDate" type="date" class="form-control" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        @if (Model.UserReg.Id == 0)
+                                        {
+                                            <button type="submit" class="btn btn-primary me-2">Submit    </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn-warning me-2">Update</button>
+                                        }
+
+                                        @*   <a class="btn btn-success" onclick="AdvSearch();">Search</a> *@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body" style="background-color:#4c9094">
+                    <h1 class="card-title" style="color:black;font-size:medium">Advance Search Form</h1>
+                    <form class="form-sample" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-4">
+                                
+                                <div class="form-group row">
+                                    <label asp-for="UserReg.RoleId" class="form-label">Role*</label>
+                                    <select asp-for="UserReg.RoleId" asp-items="@Model.RoleList" id="userrolid" class="form-select select2" required>
+                                        <option disabled selected>----Select Role----</option>
+                                    </select>
+                                    <span asp-validation-for="UserReg.RoleId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>Name*</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="UserReg.Name" type="text" id="registerName" class="form-control" placeholder="Enter Name........." />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>Email*</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="UserReg.Email" type="email" id="registerEmail" class="form-control" placeholder="Enter Email">
+                                        <span asp-validation-for="UserReg.Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>From Register Date</label>
+                                    <div class="col-sm-12">
+                                        <input  type="date" id="fromRegisterdate" class="form-control"  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>To Register Date</label>
+                                    <div class="col-sm-12">
+                                        <input  type="date" id="toregisterdate" class="form-control"  />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <a class="btn btn-success" onclick="AdvSearch();">Search</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">User Details</h2>
+                <div class="d-flex justify-content-end">
+                    <button id="btnDownLoadExcel" class="btn btn-success mb-3">
+                        Download Excel Format
+                    </button>
+                </div>
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Role</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>password</th>
+                            <th>Registration Date</th>
+                            <th>ImageUpload</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div><!-- end col -->
+@section Scripts {
+    <script src="~/js/userregisterjs.js" asp-append-version="true"></script>
+    <script src="~/js/image_validation/imagevaliadationjs.js"></script>>
+    <script src="~/js/excel helper/excel-helper.js"></script>
+    <script src="~/js/excel download/admin_userdetails.js"></script>
+}

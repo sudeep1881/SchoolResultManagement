@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewData["title"] = "student marks Register";
+}
+
+<div class="row">
+
+
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body" style="background-color:#815d52ad">
+                <h1 class="card-title" style="color:black;font-size:medium">Update  Students  Exam Details</h1>
+                <form class="form-sample" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="hidden">
+                            <div class="form-group row">
+                                <label> Student Name*</label>
+                                <div class="col-sm-12">
+                                    <input  type="text" class="form-control" placeholder="Enter Name........." />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <label>Class</label>
+                                <div class="col-sm-12">
+                                    <input  type="text" class="form-control" placeholder="Enter Name........." />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <label>Section</label>
+                                <div class="col-sm-12">
+                                    <input  type="text" class="form-control" placeholder="Enter User Name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <label>Subject</label>
+                                <div class="col-sm-12">
+                                    <input  type="email" class="form-control" placeholder="Enter Email">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <label>Marks</label>
+                                <div class="col-sm-12">
+                                    <input  type="text" class="form-control" placeholder="Enter Password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <label>percentage</label>
+                                <div class="col-sm-12">
+                                    <input  type="text" class="form-control" placeholder="Enter Password">
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                        <div class="form-group row">
+                            <label>Result*</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" placeholder="Enter Password">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    
+                                    @* @if (Model.UserReg.Id == 0)
+                                    {
+                                        <button type="submit" class="btn btn-primary">Submit    </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-warning">Update</button>
+                                    } *@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

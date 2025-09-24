@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var path = $"{Context.Request.Path}";
+    bool IsStudent = path.Contains("/Student/");
+
+    if (IsStudent)
+    {
+        Layout = "_StudentLayout";
+    }
+
+
+}

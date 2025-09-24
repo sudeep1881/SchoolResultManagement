@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["title"] = "Pass-Student-List";
+}
+
+<div class="content-wrapper">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Pass Student Details</h2>
+                <!-- Download Button -->
+                <div class="d-flex justify-content-end">
+                <button id="btnDownloadExcel" class="btn btn-success mb-3">
+                    Download Excel 
+                </button>
+                </div>
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Student Name</th>
+                            <th>Class</th>
+                            <th>Section</th>
+                            <th>Subject</th>
+                            <th>Marks</th>
+                            <th>Percentage</th>
+                            <th>result</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/PassStudentListJs.js" asp-append-version="true"></script>
+<script src="~/js/excel helper/excel-helper.js"></script>
+<script src="~/js/excel download/passstudentdownload.js" asp-append-version="true""></script>
+
+
+

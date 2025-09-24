@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var path = $"{Context.Request.Path}";
+    bool IsAdmin = path.Contains("/Admin/");
+    bool IsLogin = path.Contains("/Login/");
+    bool IsTeacher = path.Contains("/Teacher");
+    bool IsStudent = path.Contains("/Student/");
+
+
+
+    if (IsAdmin)
+    {
+        Layout = "_AdminLayout";
+    }
+
+    if (IsLogin)
+    {
+        Layout = "_LoginLayout";
+    }
+    else
+    {
+        Layout = "_Layout";
+    }
+    if (IsTeacher){
+        Layout = "_TeacherLayout";
+    }
+    if (IsStudent)
+    {
+        Layout = "_StudentLayout";
+    }
+
+}

@@ -1,0 +1,84 @@
+﻿@using SchoolAttendanceManager.Views.view_Model
+@model UserRegisterVM
+@{
+    ViewData["title"] = "Student Register";
+}
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth px-0" style="background-image:url('https://cdn.pixabay.com/photo/2021/11/25/10/41/school-6823264_1280.png')">
+            <div class="row w-100 mx-0">
+                <div class="col-lg-4 mx-auto">
+                    <div class="auth-form-light text-left py-5 px-4 px-sm-5" style="background:#8fe8ec; border-radius:50px">
+                        <div class="brand-logo" style="font-size:xx-large; display:flex;justify-content:center;color:darkred;text-shadow:1px 1px 1px pin">
+
+                            <img src="~/AttendenceLTE/src/assets/images/logo-mini.svg" alt="logo" style="width:inherit">
+                            Student Registeration
+                        </div>
+                        <h3 style="text-align:center;text-shadow:1px 1px 2px black;color:antiquewhite">Student Attedence Management</h3>
+                        <br />
+
+                        <h4 class="font-weight-light" style="text-align:center">Sign Up to continue.</h4>
+                        <form method="post" class="form-horizontal" enctype="multipart/form-data">
+
+                            <div class="mb-3">
+                                <label class="form-label">Role</label>
+                                <select asp-for="UserReg.RoleId" class="form-control">
+                                    <option value="value" disabled selected>----Select Role----</option>
+                                    <option value="2">Student</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Name</label>
+                                <input asp-for="UserReg.Name" type="text" class="form-control" placeholder="----Enter Name---">
+
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input asp-for="UserReg.Email" type="email" class="form-control" placeholder="-----Enter  Email---">
+
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input asp-for="UserReg.Password" type="text" class="form-control" placeholder="-----Enter  Password---">
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="UserReg.ImageUpload" class="form-label">Profile Image</label>
+                                <input type="file" name="fileProfileImage" class="form-control form-control-sm" accept="image/*" />
+                                <span class="text-danger"></span>
+                            </div>
+
+
+
+
+                            <div class="mb-3">
+
+                                @if (Model.UserReg.Id == 0)
+                                {
+                                    <button class="btn btn-primary " type="submit">Submit</button>
+                                }
+                            </div>
+
+
+
+
+
+
+
+                            <div class="text-center mt-4 font-weight-light">
+                                Don't have an account? <a asp-controller="Login" asp-action="Index" class="text-primary">Create</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+
+
+
+

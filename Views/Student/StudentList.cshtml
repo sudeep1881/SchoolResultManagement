@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "Student_List";
+}
+
+<div class="content-wrapper" style=" overflow-x:auto;">
+    <div class="col-12 table-responsive">
+        <div class="card table-responsive">
+            <div class="card-body" style=" overflow-x:auto;">
+                <h2 class="card-title"> Student Records</h2>
+                @* <a asp-action="DownloadExcel" class="btn btn-success mb-3">Download Excel</a> *@
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Student Name</th>
+                            <th>Class</th>
+                            <th>Section</th>
+                            <th>Subject</th>
+                            <th>Marks</th>
+                            <th>Percentage</th>
+                            <th>result</th>
+                            
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+
+@section Scripts{
+   
+    <script src="~/js/StudentDatafetchingByStudent.js" asp-append-version="true"></script>
+}

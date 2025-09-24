@@ -1,0 +1,97 @@
+﻿@using SchoolAttendanceManager.Views.view_Model
+@model StudentDetailsVM;
+
+@{
+    ViewData["title"] = "FailStudent_List";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+
+
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body" style="background-color:#8aacc1">
+                    <h1 class="card-title" style="color:black;font-size:medium">Fail Student Advance Search Form</h1>
+                    <form class="form-sample" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="hidden" asp-for="studentDetailsReg.Id">
+                                <div class="form-group row">
+                                    <label class="form-label">Fail Student Name*</label>
+                                    <select asp-for="studentDetailsReg.StudentId" asp-items="@Model.NameList" class="form-select select2" required>
+                                        <option disabled selected>----Select Name----</option>
+                                    </select>
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>Class</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="studentDetailsReg.Class" type="text" class="form-control" placeholder=".....Enter Class........">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label>Section</label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="studentDetailsReg.Section" type="text" class="form-control" placeholder="....Enter Section.....">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+
+                                        <a class="btn btn-success" onclick="AdvanceSearch();">Search Button</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Fail Student Details</h2>
+                <div class="d-flex justify-content-end">
+                    <button id="btnDownloadExcel1" class="btn btn-success m-3">
+                        Download Excel
+                    </button>
+                </div>
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Student Name</th>
+                            <th>Class</th>
+                            <th>Section</th>
+                            <th>Subject</th>
+                            <th>Marks</th>
+                            <th>Percentage</th>
+                            <th>result</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> <!-- end col -->
+@section Scripts {
+    <script src="~/js/Admin_FailStudentList.js" asp-append-version="true"></script> 
+    <script src="~/js/excel helper/excel-helper.js"></script>
+    <script src="~/js/excel download/admin_userdetails.js" asp-append-version="true"></script>
+
+}
