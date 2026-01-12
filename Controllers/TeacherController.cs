@@ -455,7 +455,7 @@ namespace SchoolAttendanceManager.Controllers
 
             var returnObj = new
             {
-                downloadAllow = 1,   // ✅ your sir's way
+                downloadAllow = 1,   
                 data = new { result }
             };
             return new JsonResult(returnObj);
