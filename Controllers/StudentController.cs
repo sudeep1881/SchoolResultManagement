@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using SchoolAttendanceManager.DTOs;
@@ -8,6 +9,7 @@ using SchoolAttendanceManager.Models;
 
 namespace SchoolAttendanceManager.Controllers
 {
+    [Authorize(Roles = "Student")]
     public class StudentController : Controller
     {
         private readonly SchoolAttendanceDbContext _db;

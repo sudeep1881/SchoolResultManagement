@@ -1,54 +1,84 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SchoolAttendanceManager.Infrastructure.Email;
 using SchoolAttendanceManager.Models;
+using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services
 builder.Services.AddControllersWithViews();
 
+// DbContext
 builder.Services.AddDbContext<SchoolAttendanceDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     option.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
-// Bind Smtp options
+// Email
 builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
-
-// Register email sender
 builder.Services.AddSingleton<IEmailSender, SmtpEmailSender>();
 
-builder.Services.AddSession();
-
-// for session
-builder.Services.AddHttpContextAccessor();
+// Session
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(Options =>
+builder.Services.AddSession(options =>
 {
-    Options.IdleTimeout = TimeSpan.FromHours(4);
-    Options.Cookie.HttpOnly = true;
-    Options.Cookie.IsEssential = true;
+    options.IdleTimeout = TimeSpan.FromHours(4);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
+builder.Services.AddHttpContextAccessor();
 
+
+// 🔐 AUTHENTICATION (COOKIE + JWT)
+builder.Services.AddAuthentication(options =>
+{
+    // MVC uses COOKIE
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(options =>
+{
+    options.LoginPath = "/Login/Index";
+    options.AccessDeniedPath = "/Login/AccessDenied";
+})
+// JWT kept for API / future usage
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-
 app.UseRouting();
-app.UseSession();//   Write Session
-app.UseAuthorization();
+
+app.UseSession();          // session first
+app.UseAuthentication();  // then auth
+app.UseAuthorization();   // then authorization
 
 app.MapControllerRoute(
     name: "default",

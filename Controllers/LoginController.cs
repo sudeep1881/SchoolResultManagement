@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using SchoolAttendanceManager.Helpers;
 using SchoolAttendanceManager.Image_Services;
 using SchoolAttendanceManager.Infrastructure.Email;
 using SchoolAttendanceManager.Models;
 using SchoolAttendanceManager.Views.view_Model;
+using System.Security.Claims;
 namespace SchoolAttendanceManager.Controllers;
 
 public class LoginController : Controller
@@ -13,12 +18,14 @@ public class LoginController : Controller
     private readonly IWebHostEnvironment _webHostEnvironment;
 
     private readonly IEmailSender _email;
+    private readonly IConfiguration _configuration;
 
-    public LoginController(SchoolAttendanceDbContext db, IWebHostEnvironment webHostEnvironment, IEmailSender email)
+    public LoginController(SchoolAttendanceDbContext db, IWebHostEnvironment webHostEnvironment, IEmailSender email, IConfiguration configuration)
     {
         _db = db;
         _webHostEnvironment = webHostEnvironment;
         _email = email;
+        _configuration = configuration;
     }
 
     #region--Login--
@@ -34,112 +41,70 @@ public class LoginController : Controller
     }
 
     #endregion
-
-    //#region--POST METHOD--
-    //[HttpPost]
-    //public async Task<IActionResult> Index(LoginVM loginVM)
-    //{
-    //    if (ModelState.IsValid)
-    //    {
-
-    //        var user = await _db.Registrations.Where(u => u.Isdeleted == false &&
-    //        u.Email!.Trim().ToLower() == loginVM.EmailAddress.Trim().ToLower() &&
-    //        u.Password == loginVM.Password).Select(x => new Registration
-    //        {
-    //            Id = x.Id,
-    //            RoleId = x.RoleId,
-    //            Name = x.Name,
-    //            Role = x.RoleNavigation!.Name,
-    //            Email = x.Email,
-    //            Password=x.Password
-
-    //        }).FirstOrDefaultAsync();
-    //        if (user != null)
-    //        {
-    //            HttpContext.Session.SetInt32(SD.KeyUser, user.Id);
-    //            HttpContext.Session.SetInt32(SD.KeyRole, (int)user.RoleId);
-
-    //            if (user.RoleId == 1) // Admin
-    //            {
-    //                return RedirectToAction(nameof(AdminController.Dashboard), "Admin");
-
-    //            }
-    //            else if (user.RoleId == 2) // student
-    //            {
-    //                return RedirectToAction(nameof(StudentController.StudentList), "Student");
-
-    //            }
-    //            else if (user.RoleId == 3) // teacher
-    //            {
-    //                return RedirectToAction(nameof(TeacherController.Dashboard), "Teacher");
-
-    //            }
-
-    //            else
-    //            {
-    //                TempData["error"] = "Email Invalid";
-    //                return RedirectToAction();
-
-    //            }
-
-
-    //        }
-    //    }
-
-    //    TempData["error"] = "Login  or Password is Incorrected";
-
-    //    return View(loginVM);
-
-
-
-    //}
-    //#endregion
-
     #region--Post Method---
     [HttpPost]
     public async Task<IActionResult> Index(LoginVM logimvm)
     {
-        var user = await _db.Registrations.Where(s => s.Isdeleted == false && s.Email!.Trim().ToLower() == logimvm.EmailAddress.Trim().ToLower()
-        && s.Password!.Trim().ToLower() == logimvm.Password).Select(s => new Registration
-        {
-            Id = s.Id,
-            Name = s.Name,
-            RoleId = s.RoleId,
-            Email = s.Email,
-            Role = s.RoleNavigation!.Name,
-            Password = s.Password 
-        }).FirstOrDefaultAsync();
+        var user = await _db.Registrations
+            .Where(s => s.Isdeleted == false &&
+                s.Email!.Trim().ToLower() == logimvm.EmailAddress.Trim().ToLower() &&
+                s.Password == logimvm.Password)
+            .Select(s => new Registration
+            {
+                Id = s.Id,
+                Name = s.Name,
+                RoleId = s.RoleId,
+                Email = s.Email,
+                Role = s.RoleNavigation!.Name
+            })
+            .FirstOrDefaultAsync();
 
-        if (user != null)
-        {
-            HttpContext.Session.SetInt32(SD.KeyUser, user.Id);
-            HttpContext.Session.SetInt32(SD.KeyRole, (int)user.RoleId!);
-
-            if (user.RoleId == 1)
-            {
-                return RedirectToAction(nameof(AdminController.Dashboard), "Admin");
-            }
-            else if (user.RoleId == 2)
-            {
-                return RedirectToAction(nameof(StudentController.StudentList), "Student");
-            }
-            else if (user.RoleId == 3)
-            {
-                return RedirectToAction(nameof(TeacherController.Dashboard), "Teacher");
-            }
-            else
-            {
-                TempData["error"] = " Email or Password is not found";
-                return RedirectToAction();
-            }
-        }
-        else
+        if (user == null)
         {
             TempData["error"] = "Invalid Email or Password";
             return View(logimvm);
-
         }
+
+        // ===============================
+        // 🔐 ADD THIS BLOCK (COOKIE LOGIN)
+        // ===============================
+        var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        new Claim(ClaimTypes.Email, user.Email!),
+        new Claim(ClaimTypes.Role, user.Role!) // must match "Admin"
+    };
+
+        var identity = new ClaimsIdentity(
+            claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+        var principal = new ClaimsPrincipal(identity);
+
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            principal);
+        // ===============================
+
+
+        // 🔐 JWT (optional, keep for API)
+        var jwtHelper = new JwtTokenHelper(_configuration);
+        var token = jwtHelper.GenerateToken(user.Id, user.Email!, user.Role!);
+
+        HttpContext.Session.SetString("JWToken", token);
+
+        HttpContext.Session.SetInt32(SD.KeyUser, user.Id);
+        HttpContext.Session.SetInt32(SD.KeyRole, (int)user.RoleId!);
+
+        // Role-based redirect
+        return user.RoleId switch
+        {
+            1 => RedirectToAction(nameof(AdminController.Dashboard), "Admin"),
+            2 => RedirectToAction(nameof(StudentController.StudentList), "Student"),
+            3 => RedirectToAction(nameof(TeacherController.Dashboard), "Teacher"),
+            _ => RedirectToAction("Index")
+        };
     }
+
     #endregion
 
     #endregion
