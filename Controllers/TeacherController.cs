@@ -204,6 +204,7 @@ namespace SchoolAttendanceManager.Controllers
         #endregion
 
         #region----Result  Details------
+
         #region--Get Method---
         public async Task<IActionResult> StudentListFetching()
         {
@@ -217,6 +218,7 @@ namespace SchoolAttendanceManager.Controllers
         #endregion
 
         #region---Fetch Method-----
+
         [HttpPost]
         public async Task<IActionResult> StudentFetchingList()
         {

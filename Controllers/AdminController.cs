@@ -370,6 +370,50 @@ public class AdminController : Controller
 
     #endregion
 
+    #region --Admin List---
+
+    #region--Get Method------
+    public IActionResult AdminDetailsList(int? id)
+    {
+        return View();
+    }
+    #endregion
+
+    #region---Fetch  AdminList----
+    [HttpPost]
+    public IActionResult AdminListAll()
+    {
+        var result = _db.Registrations.Where(s => s.Isdeleted == false && s.RoleId == 1).Select(s => new RegistrationDTOs
+        {
+            Id=s.Id,
+            Role=s.RoleNavigation!.Name,
+            Name=s.Name,
+            Email=s.Email,
+            Password = s.Password,
+            ImageUpload=s.ImageUpload
+        }).ToList();
+
+        return Json(new { data = result });
+    }
+    #endregion
+
+    #region---Delete Admin---
+    [HttpPost]
+    public IActionResult DeletAdminListMethod(int id)
+    {
+        var role = _db.Registrations.Where(s => s.Isdeleted == false && s.Id == id).FirstOrDefault();
+        if (role == null)
+        {
+            return Json(new { success = false, message = "Data Not Found" });
+        }
+        role.Isdeleted = true;
+        _db.Registrations.Update(role);
+        _db.SaveChanges();
+        return Json(new { success = true, message = "Data Delete Successfully" });
+    }
+    #endregion
+    #endregion
+
     #region--Student List--
     public IActionResult Student()
     {

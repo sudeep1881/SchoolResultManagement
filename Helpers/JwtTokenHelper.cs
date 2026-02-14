@@ -21,7 +21,8 @@ namespace SchoolAttendanceManager.Helpers
             {
             new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
             new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Role, role)
+            new Claim(ClaimTypes.Role, role),
+            
         };
 
             var key = new SymmetricSecurityKey(

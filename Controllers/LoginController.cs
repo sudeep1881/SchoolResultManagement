@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using SchoolAttendanceManager.Helpers;
 using SchoolAttendanceManager.Image_Services;
 using SchoolAttendanceManager.Infrastructure.Email;
@@ -68,12 +67,13 @@ public class LoginController : Controller
         // ===============================
         // 🔐 ADD THIS BLOCK (COOKIE LOGIN)
         // ===============================
+
         var claims = new List<Claim>
     {
         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         new Claim(ClaimTypes.Email, user.Email!),
         new Claim(ClaimTypes.Role, user.Role!) // must match "Admin"
-    };
+    };   
 
         var identity = new ClaimsIdentity(
             claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -83,9 +83,8 @@ public class LoginController : Controller
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme,
             principal);
-        // ===============================
 
-
+        // ===============================>
         // 🔐 JWT (optional, keep for API)
         var jwtHelper = new JwtTokenHelper(_configuration);
         var token = jwtHelper.GenerateToken(user.Id, user.Email!, user.Role!);
