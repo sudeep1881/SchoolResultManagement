@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,8 @@ using SchoolAttendanceManager.Models;
 using SchoolAttendanceManager.Views.view_Model;
 
 
+
+
 namespace SchoolAttendanceManager.Controllers;
 
 [Authorize(Roles = "Admin")]
@@ -15,7 +18,6 @@ public class AdminController : Controller
 {
     private readonly SchoolAttendanceDbContext _db;
     private readonly IWebHostEnvironment _webHostEnvironment;
-
     public AdminController(SchoolAttendanceDbContext db, IWebHostEnvironment webHostEnvironment)
     {
         _db = db;
@@ -185,12 +187,12 @@ public class AdminController : Controller
     {
         var userRegvm = new UserRegisterVM
         {
-            RoleList =  GetRoles()
+            RoleList = GetRoles()
 
         };
         if (id.HasValue && id != 0)
         {
-            var rode = _db.Registrations.Where(u => u.Isdeleted == false && u.Id == id).FirstOrDefault();
+            var rode =await _db.Registrations.Where(u => u.Isdeleted == false && u.Id == id).FirstOrDefaultAsync();
             if (rode == null)
             {
                 TempData["error"] = "Data Not Found";
@@ -305,7 +307,7 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> RegistrationAdvSearch(string? name, string? email, int? roleid, DateOnly? fromregisterDate, DateOnly? ToregisterDate)
     {
-        var result = _db.Registrations.Where(s => s.Isdeleted == false
+        var result =await _db.Registrations.Where(s => s.Isdeleted == false
         && ((name != null) ? s.Name == name : true)
         && ((email != null) ? s.Email == email : true)
         && ((roleid > 0) ? s.RoleId == roleid : true)
@@ -319,8 +321,9 @@ public class AdminController : Controller
             Password = s.Password,
             ImageUpload = s.ImageUpload,
             RegistrationDate = s.RegistrationDate
-        }).ToList();
-
+        }).ToListAsync();
+        
+       
         // DataTables expects { data: [...] }
         return Json(new { data = result });
     }
@@ -368,6 +371,75 @@ public class AdminController : Controller
     }
     #endregion
 
+    #endregion
+
+    #region --Admin List---
+
+    #region--Get Method------
+    public IActionResult AdminDetailsList(int? id)
+    {
+        return View();
+    }
+    #endregion
+
+    #region---Fetch  AdminList----
+    [HttpPost]
+    public IActionResult AdminListAll()
+    {
+        var result = _db.Registrations.Where(s => s.Isdeleted == false && s.RoleId == 1).Select(s => new RegistrationDTOs
+        {
+            Id=s.Id,
+            Role=s.RoleNavigation!.Name,
+            Name=s.Name,
+            Email=s.Email,
+            Password = s.Password,
+            ImageUpload=s.ImageUpload
+        }).ToList();
+
+        return Json(new { data = result });
+    }
+    #endregion
+
+    #region---Delete Admin---
+    [HttpPost]
+    public IActionResult DeletAdminListMethod(int id)
+    {
+        var role = _db.Registrations.Where(s => s.Isdeleted == false && s.Id == id).FirstOrDefault();
+        if (role == null)
+        {
+            return Json(new { success = false, message = "Data Not Found" });
+        }
+        role.Isdeleted = true;
+        _db.Registrations.Update(role);
+        _db.SaveChanges();
+        return Json(new { success = true, message = "Data Delete Successfully" });
+    }
+    #endregion
+
+    #region--Download Excel---
+    [HttpPost]
+    public IActionResult DownloadExcelAdminList()
+    {
+        var result = _db.Registrations.Where(s => s.Isdeleted == false && s.RoleId == 1).Select(s => new RegistrationDTOs
+        {
+                Id=s.Id,
+                Role=s.RoleNavigation!.Name,
+                Name=s.Name,
+                Email=s.Email,
+                Password=s.Password,
+                ImageUpload=s.ImageUpload
+
+        }).ToList();
+
+        var dataList = new
+        {
+            dataAllows=1,
+            data=result
+        };
+
+        return new JsonResult(dataList);
+    }
+    #endregion
     #endregion
 
     #region--Student List--
@@ -710,10 +782,11 @@ public class AdminController : Controller
     {
         var studentDetailsvm = new StudentDetailsVM()
         {
+
             NameList = await Getregister(),
             SubjectList = await GetSubject(),
             ResultList = await GetResult()
-
+    
         };
         if (id.HasValue && id != 0)
         {

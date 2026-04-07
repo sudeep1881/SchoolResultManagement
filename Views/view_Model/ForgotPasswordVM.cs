@@ -6,6 +6,6 @@ namespace SchoolAttendanceManager.Views.view_Model
     {
         [Required(ErrorMessage = "Email  is Mandatory")]
         [EmailAddress(ErrorMessage = "Enter Valid Email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
     }
 }
