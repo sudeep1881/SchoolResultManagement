@@ -26,9 +26,11 @@ namespace SchoolAttendanceManager.Helpers
         };
 
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+                Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+     
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
@@ -39,6 +41,7 @@ namespace SchoolAttendanceManager.Helpers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+
         }
     }
 

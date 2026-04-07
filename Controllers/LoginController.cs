@@ -40,10 +40,12 @@ public class LoginController : Controller
     }
 
     #endregion
+
     #region--Post Method---
     [HttpPost]
     public async Task<IActionResult> Index(LoginVM logimvm)
     {
+
         var user = await _db.Registrations
             .Where(s => s.Isdeleted == false &&
                 s.Email!.Trim().ToLower() == logimvm.EmailAddress.Trim().ToLower() &&
@@ -57,7 +59,7 @@ public class LoginController : Controller
                 Role = s.RoleNavigation!.Name
             })
             .FirstOrDefaultAsync();
-
+            
         if (user == null)
         {
             TempData["error"] = "Invalid Email or Password";
